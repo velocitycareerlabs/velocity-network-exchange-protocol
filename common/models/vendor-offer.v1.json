@@ -1,0 +1,64 @@
+{
+  "title": "vendor-offer",
+  "$id": "vendor-offer",
+  "version": "1.0",
+  "description": "An offer is similar to a credential but is never wrapped in a JWT and hence doesnt carry the JWS (digital signature)",
+  "x-tags": [
+    "offers"
+  ],
+  "allOf": [
+    {
+      "$ref": "./new-vendor-offer.v1.json"
+    },
+    {
+      "$ref": "./mutable-record.v1.json"
+    }
+  ],
+  "x-examples": {
+    "Sample Offer Response": {
+      "id": "606317c3d0082cc569b27e5e",
+      "type": [
+        "CurrentEmploymentPosition"
+      ],
+      "credentialSubject": {
+        "vendorUserId": "5f29cf7cf12da6007abb9090",
+        "company": "did:velocity:0xc257274276a4e539741ca11b590b9447b26a8051",
+        "companyName": {
+          "localized": {
+            "en": "Microsoft Corporation"
+          }
+        },
+        "title": {
+          "localized": {
+            "en": "Director, Communications (HoloLens & Mixed Reality Experiences)"
+          }
+        },
+        "startMonthYear": {
+          "month": 10,
+          "year": 2010
+        },
+        "endMonthYear": {
+          "month": 6,
+          "year": 2019
+        },
+        "location": {
+          "countryCode": "US",
+          "regionCode": "MA"
+        },
+        "description": {
+          "localized": {
+            "en": "Big Data, AI, Hybrid, IoT, Datacenter, Mixed Reality/HoloLens, D365, Power Platform - all kinds of fun stuff!"
+          }
+        }
+      },
+      "validFrom": "2019-08-24T14:15:22Z",
+      "validUntil": "2019-08-24T14:15:22Z",
+      "offerId": "skwqoc82kj(-ska",
+      "offerCreationDate": "2019-08-24T14:15:22Z",
+      "offerExpirationDate": "2019-08-24T14:15:22Z",
+      "exchangeId": "606317bbd0082cc569b27e5d",
+      "createdAt": "2019-08-24T14:15:22Z",
+      "updatedAt": "2019-08-24T14:15:22Z"
+    }
+  }
+}

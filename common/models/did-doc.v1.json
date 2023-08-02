@@ -1,0 +1,119 @@
+{
+  "$id": "/did-core.didDocument",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "@context": {
+      "title": "@context",
+      "description": "https://w3c.github.io/did-core-registries/#context",
+      "oneOf": [
+        {
+          "type": "string",
+          "const": "https://www.w3.org/ns/did/v1"
+        },
+        {
+          "type": "array",
+          "additionalItems": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object"
+              }
+            ]
+          },
+          "items": [
+            {
+              "type": "string",
+              "const": "https://www.w3.org/ns/did/v1"
+            }
+          ]
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "id": {
+      "title": "DID",
+      "description": "https://w3c.github.io/did-core-registries/#id",
+      "type": "string",
+      "pattern": "^did:[a-z0-9]+:[A-Za-z0-9.-_:?=&;]+$",
+      "example": [
+        "did:key:z6MksQ35B5bwZDQq4QKuhQW2Sv6dcqwg4PqcSFf67pdgrtjB"
+      ]
+    },
+    "controller": {
+      "title": "DID Controller",
+      "description": "https://w3c.github.io/did-core-registries/#controller",
+      "example": [
+        "did:key:z6MksQ35B5bwZDQq4QKuhQW2Sv6dcqwg4PqcSFf67pdgrtjB"
+      ],
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^did:[a-z0-9]+:[A-Za-z0-9.-_:?=&;]+$"
+        },
+        {
+          "type": "array",
+          "items": [
+            {
+              "type": "string",
+              "pattern": "^did:[a-z0-9]+:[A-Za-z0-9.-_:?=&;]+$"
+            }
+          ]
+        }
+      ]
+    },
+    "publicKey": {
+      "title": "Public Key",
+      "description": "https://w3c.github.io/did-core-registries/#publicKey",
+      "type": "array",
+      "items": {
+        "$ref": "./did-core.publicKey/publicKey.json"
+      }
+    },
+    "authentication": {
+      "title": "Authentication",
+      "description": "https://w3c.github.io/did-core-registries/#authentication",
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "$ref": "./did-core.publicKey/publicKey.json"
+          }
+        ]
+      }
+    },
+    "service": {
+      "title": "Service",
+      "description": "https://w3c.github.io/did-core-registries/#service",
+      "type": "array",
+      "items": {
+        "$ref": "./did-service.v1.json"
+      }
+    },
+    "created": {
+      "title": "Created",
+      "description": "https://w3c.github.io/did-core-registries/#created",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "title": "Updated",
+      "description": "https://w3c.github.io/did-core-registries/#updated",
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "id"
+  ],
+  "x-examples": {
+    "example-1": {}
+  }
+}

@@ -1,0 +1,1003 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "VNF Agent Credential Holder API",
+    "version": "0.6",
+    "description": "Holder API for getting and sharing verified credentials including their identity",
+    "contact": {
+      "name": "Andres Olave",
+      "email": "andres.olave@velocitycareerlabs.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://velocitycareerlabs.com/api/holder/v1",
+      "description": "Holder Reference API"
+    },
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/org/{organizationDID}/exchange": {
+      "post": {
+        "summary": "Start an exchange",
+        "operationId": "start-exchange",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "client must specify if the exchange is 'ISSUING' or 'DISCLOSURE'",
+                    "enum": [
+                      "ISSUING",
+                      "DISCLOSURE"
+                    ]
+                  },
+                  "pushDelegate": {
+                    "$ref": "../common/models/push-delegate.v1.json"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              "examples": {
+                "Sample Using Push Urls": {
+                  "value": {
+                    "type": "ISSUING",
+                    "pushDelegate": {
+                      "pushToken": "z3pwGI36Vnj7tLhSj6TQW",
+                      "pushUrl": "https://push.example.com"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "description": ""
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "properties": {
+                    "exchangeId": {
+                      "type": "string",
+                      "description": "the exchange id could be for an issuing or an inspection"
+                    }
+                  },
+                  "required": [
+                    "exchangeId"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Post that this is a new exchange. Uses post as it's not idempotent.\n\nOptionally send through the push delegate to enable the issuer/inspector to send through a push",
+        "tags": [
+          "exchange"
+        ]
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "organizationDID",
+          "in": "path",
+          "required": true,
+          "description": "the did of the organization that has been provisioined on the agent"
+        }
+      ]
+    },
+    "/org/{organizationDID}/issue/credential-offers": {
+      "post": {
+        "summary": "Generates the credential offers",
+        "operationId": "generate-credential-offers",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "./models/offer.v1.json"
+                  }
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "Immediate",
+                        "NotImmediate"
+                      ]
+                    },
+                    "maxAgeDuration": {
+                      "type": "string",
+                      "description": "duration in iso 8601 format. that can be used to notify the user and the agent the maximum amount time to wait for a reply",
+                      "example": "P3D",
+                      "pattern": "^P(?=\\d+[YMWD])(\\d+Y)?(\\d+M)?(\\d+W)?(\\d+D)?(T(?=\\d+[HMS])(\\d+H)?(\\d+M)?(\\d+S)?)?$"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "timestamp from which the maxAge applies"
+                    }
+                  },
+                  "required": [
+                    "kind"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {
+                  "types": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "exchangeId": {
+                    "type": "string",
+                    "description": "exchangeId is unique for this issuing attempt"
+                  },
+                  "existingCredentialsHashes": {
+                    "type": "array",
+                    "description": "A collection of hashes of the existing credentials received restricted to the values in credentialSubject + expirationDate",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "alg": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "exchangeId"
+                ]
+              },
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "types": [
+                      "https://velocitycareerlabs.com/schemas/CurrentEmploymentPosition",
+                      "https://velocitycareerlabs.com/schemas/EducationDegree"
+                    ],
+                    "exchangeId": "f312ea213215498123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "SessionToken": []
+          }
+        ],
+        "tags": [
+          "issuing"
+        ],
+        "description": "Generates the offers of the specified types for this person. If no types are specified then offers of all supported types should be generated"
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "organizationDID",
+          "in": "path",
+          "required": true,
+          "description": "the did of the organization that has been provisioined on the agent"
+        }
+      ]
+    },
+    "/org/{organizationDID}/issue/finalize-offers": {
+      "post": {
+        "summary": "Finalize offers",
+        "operationId": "finalize-offers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "An array of JWTs of the accepted offers. Each JWT use JWS to encode the credential: https://stoplight.io/p/docs/gh/sloops77/vcl-poc-apis/reference/holder/models/credential.v1.json?group=master",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "approvedOfferIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "The list of approved offer ids"
+                  },
+                  "rejectedOfferIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "The list of rejected offer ids"
+                  },
+                  "exchangeId": {
+                    "type": "string",
+                    "description": "exchangeId is unique for this issuing attempt"
+                  }
+                },
+                "required": [
+                  "exchangeId"
+                ],
+                "additionalProperties": true
+              }
+            }
+          },
+          "description": "Send an array of offerIds"
+        },
+        "security": [
+          {
+            "SessionToken": []
+          }
+        ],
+        "description": "Generates verifiable credentials for the approved offers. The credentials are returned as an array of jwts that match the credential schema. Explicitly rejected offers may also be sent. Maybe called multiple times for the same exchange. Any offers not received means that the exchange will stay open.\n\nSpec: https://www.w3.org/TR/vc-data-model/#json-web-token - options of how to encode & decode a verifiable credential as a JWT. \n\nImplementation: https://github.com/decentralized-identity/did-jwt-vc",
+        "tags": [
+          "issuing"
+        ]
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "organizationDID",
+          "in": "path",
+          "required": true,
+          "description": "the did of the organization that has been provisioined on the agent"
+        }
+      ]
+    },
+    "/org/{organizationDID}/issue/submit-idenitification": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "organizationDID",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Submit identification using Presenation Exchange",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "exchange": {
+                      "$ref": "./models/exchange-progress.json"
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "operationId": "post-issue-submit-identificaiton",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "exchange_id": {
+                    "type": "string"
+                  },
+                  "jwt_vp": {
+                    "type": "string"
+                  },
+                  "push_delegate": {
+                    "$ref": "../common/models/push-delegate.v1.json"
+                  },
+                  "vp": {
+                    "type": "object",
+                    "description": "====DO NOT SEND====",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "issued": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "vendorOriginContext": {
+                        "type": "string"
+                      },
+                      "presentation_submission": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "definition_id": {
+                            "type": "string"
+                          },
+                          "locale": {
+                            "type": "string"
+                          },
+                          "descriptor_map": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "path": {
+                                  "type": "string"
+                                },
+                                "path_nested": {
+                                  "type": "string"
+                                },
+                                "format": {
+                                  "type": "string",
+                                  "enum": [
+                                    "jwt",
+                                    "jwt_vc",
+                                    "jwt_vp",
+                                    "ldp",
+                                    "ldp_vc",
+                                    "ldp_vp"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "path",
+                                "format"
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "descriptor_map"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "issued"
+                    ]
+                  }
+                },
+                "required": [
+                  "exchange_id",
+                  "jwt_vp"
+                ]
+              }
+            }
+          }
+        },
+        "description": "Submit a identification using Presenation Exchange.\n\nThe body and response is exactly the same as submit-presentation",
+        "tags": [
+          "issuing"
+        ]
+      }
+    },
+    "/org/{organizationDID}/reject-presentation-request": {
+      "post": {
+        "summary": "Reject a presentation request",
+        "operationId": "reject-disclosure",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Reject disclosure requested",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "exchangeId": {
+                    "type": "string",
+                    "description": "exchangeId is unique for this inspection attempt"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "common"
+        ]
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "organizationDID",
+          "in": "path",
+          "required": true,
+          "description": "the did of the organization that has been provisioined on the agent"
+        }
+      ]
+    },
+    "/org/{organizationDID}/channels": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "organizationDID",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Enable to channel",
+        "tags": [
+          "channels"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dhPublicKey": {
+                      "type": "string",
+                      "description": "the diffie helman public key for the credential agent"
+                    },
+                    "algorithm": {
+                      "type": "string",
+                      "description": "chosen algorithm. if not sent, then encryption is not supported"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "post-channels",
+        "description": "Creates a channel - currently channels are only required for push notifications activation. They will also be used for Peer DIDs.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "registrationToken": {
+                    "type": "string"
+                  },
+                  "dhPublicKey": {
+                    "type": "string",
+                    "description": "the Diffie Helman Public Key for the holder app to be used for encryption (coming soon)"
+                  },
+                  "algorithms": {
+                    "type": "array",
+                    "description": "algorithms supported",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/org/{organizationDID}/inspect/submit-presentation": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "organizationDID",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Submit a presentation using Presenation Exchange",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "exchange": {
+                      "$ref": "./models/exchange-progress.json"
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        },
+        "operationId": "post-inspect-submit-presentation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "exchange_id": {
+                    "type": "string"
+                  },
+                  "jwt_vp": {
+                    "type": "string"
+                  },
+                  "push_delegate": {
+                    "$ref": "../common/models/push-delegate.v1.json"
+                  },
+                  "vp": {
+                    "type": "object",
+                    "description": "====DO NOT SEND====",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "issued": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "vendorOriginContext": {
+                        "type": "string"
+                      },
+                      "presentation_submission": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "definition_id": {
+                            "type": "string"
+                          },
+                          "locale": {
+                            "type": "string"
+                          },
+                          "descriptor_map": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "path": {
+                                  "type": "string"
+                                },
+                                "path_nested": {
+                                  "type": "string"
+                                },
+                                "format": {
+                                  "type": "string",
+                                  "enum": [
+                                    "jwt",
+                                    "jwt_vc",
+                                    "jwt_vp",
+                                    "ldp",
+                                    "ldp_vc",
+                                    "ldp_vp"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "path",
+                                "format"
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "descriptor_map"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "issued"
+                    ]
+                  }
+                },
+                "required": [
+                  "exchange_id",
+                  "jwt_vp"
+                ]
+              }
+            }
+          }
+        },
+        "description": "Submit a presentation using Presenation Exchange",
+        "tags": [
+          "presentation-exchange"
+        ]
+      }
+    },
+    "/org/{organizationDID}/get-exchange-progress": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "organizationDID",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get exchange progress",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "exchange": {
+                      "$ref": "./models/exchange-progress.json"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-org-organizationDID-inspect-get-presentation-progress",
+        "description": "Get the progress of the exchange",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "exchange_id",
+            "description": "the exchange id",
+            "required": true
+          }
+        ],
+        "tags": [
+          "common"
+        ],
+        "security": [
+          {
+            "SessionToken": []
+          }
+        ]
+      }
+    },
+    "/org/{organizationDID}/issue/get-credential-manifest": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "organizationDID",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a credential manifest JWT",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "issuing_request": {
+                      "type": "string",
+                      "description": "a jwt signed by the issuer. See credential_manifest for the schema of the payload."
+                    }
+                  },
+                  "required": [
+                    "issuing_request"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-org-organizationDID-issue-get-credential-manifest",
+        "description": "Gets a JWT encoded issuing-request. See credential-manifest https://identity.foundation/credential-manifest/#resource-definition & presentation-definition https://identity.foundation/presentation-exchange/#presentation-definition",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "credential_types",
+            "description": "the credential types that the holder wants the credential manifests for"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "exchange_id",
+            "description": "the exchange id to use for this credential manifest"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "push_delegate.push_token",
+            "description": "the push token for this transaction",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "push_delegate.push_url",
+            "description": "the push url to the holderapp provider",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "refresh",
+            "description": "true when this a refresh rather than new credentials"
+          }
+        ],
+        "tags": [
+          "issuing"
+        ]
+      }
+    },
+    "/org/{organizationDID}/inspect/get-presentation-request": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "organizationDID",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a presentation request JWT",
+        "tags": [
+          "presentation-exchange"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "presentation_request": {
+                      "type": "string",
+                      "description": "a jwt signed by the inspector. See presentation_definition for the schema of the payload."
+                    }
+                  },
+                  "required": [
+                    "presentation_request"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-org-organizationDID-inspect-get-presentation-request",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "id",
+            "description": "the presentation request id (also the disclosure id)"
+          }
+        ],
+        "description": "Gets a JWT encoded presentation definition. See presentation-definition https://identity.foundation/presentation-exchange/#presentation-definition "
+      }
+    },
+    "/org/{organizationDID}/inspect/siop/get-presentation-request": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "organizationDID",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "OIDC SIOP DID AUTHN request",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-org-organizationDID-siop-get-presentation-request",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "id"
+          }
+        ],
+        "description": "Returns the siop-request JWT as text/plan"
+      }
+    },
+    "/org/{organizationDID}/inspect/siop/submit-presentation": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "organizationDID",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "OIDC SIOP DID AUTHN response",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "offers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "./models/offer.v1.json"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        },
+        "operationId": "get-org-organizationDID-inspect-siop-submit-presentation",
+        "requestBody": {
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "The JWT encoded response"
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "SessionToken": {
+        "type": "http",
+        "scheme": "Bearer"
+      }
+    },
+    "schemas": {}
+  },
+  "tags": [
+    {
+      "name": "channels"
+    }
+  ]
+}

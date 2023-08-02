@@ -1,0 +1,47 @@
+{
+  "title": "issuing-request",
+  "type": "object",
+  "properties": {
+    "exchange_id": {
+      "type": "string",
+      "description": "the exchange id"
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "client_name",
+        "logo_uri",
+        "tos_uri",
+        "max_retention_period"
+      ],
+      "properties": {
+        "client_name": {
+          "type": "string",
+          "description": "client name"
+        },
+        "logo_uri": {
+          "type": "string",
+          "format": "uri",
+          "description": "logo to use for the organization"
+        },
+        "tos_uri": {
+          "type": "string",
+          "format": "uri",
+          "description": "terms of service for the issuing and identification"
+        },
+        "max_retention_period": {
+          "type": "string",
+          "description": "should be iso 8601 duration"
+        }
+      }
+    },
+    "credential_manifest": {
+      "$ref": "./credential-manifest.v1.json"
+    }
+  },
+  "required": [
+    "exchange_id",
+    "metadata",
+    "credential_manifest"
+  ]
+}

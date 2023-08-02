@@ -1,0 +1,41 @@
+{
+  "title": "new-key-metadata",
+  "type": "object",
+  "description": "",
+  "properties": {
+    "purposes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "DLT_TRANSACTIONS",
+          "EXCHANGES",
+          "ISSUING_METADATA"
+        ]
+      }
+    },
+    "algorithm": {
+      "type": "string",
+      "enum": [
+        "SECP256K1"
+      ],
+      "default": "SECP256K1"
+    },
+    "encoding": {
+      "type": "string",
+      "enum": [
+        "hex"
+      ]
+    },
+    "kidFragment": {
+      "type": "string",
+      "pattern": "^#.*$"
+    }
+  },
+  "required": [
+    "purposes",
+    "encoding",
+    "kidFragment"
+  ]
+}

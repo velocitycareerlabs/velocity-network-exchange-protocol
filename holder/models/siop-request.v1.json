@@ -1,0 +1,73 @@
+{
+  "title": "siop-request",
+  "type": "object",
+  "properties": {
+    "response_type": {
+      "type": "string",
+      "pattern": "^id_token$"
+    },
+    "response_mode": {
+      "type": "string",
+      "pattern": "^form_post$"
+    },
+    "client_id": {
+      "type": "string",
+      "format": "uri",
+      "description": "client_id is the redirect URI of the RP"
+    },
+    "scope": {
+      "type": "string",
+      "pattern": "^openid did_authn$"
+    },
+    "state": {
+      "type": "string"
+    },
+    "nonce": {
+      "type": "string"
+    },
+    "iss": {
+      "type": "string",
+      "description": "the did of the issuer"
+    },
+    "registration": {
+      "type": "object",
+      "required": [
+        "client_name",
+        "tos_uri",
+        "logo_uri"
+      ],
+      "properties": {
+        "client_name": {
+          "type": "string"
+        },
+        "tos_uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "logo_uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "max_retention_period": {
+          "type": "string",
+          "description": "maximum duration that the data will be retained for by the relying party. encoded as ISO 8601 duration"
+        },
+        "max_retention_age": {
+          "type": "integer",
+          "description": "retention duration encoded as seconds"
+        }
+      }
+    },
+    "presentation_definition": {
+      "$ref": "./presentation-definition.v1.json"
+    }
+  },
+  "required": [
+    "response_type",
+    "response_mode",
+    "client_id",
+    "scope",
+    "iss",
+    "registration"
+  ]
+}

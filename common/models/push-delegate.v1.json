@@ -1,0 +1,22 @@
+{
+  "title": "push-delegate",
+  "type": "object",
+  "properties": {
+    "pushToken": {
+      "type": "string",
+      "description": "the token to use for identifying the group of devices this device belongs to"
+    },
+    "pushUrl": {
+      "type": "string",
+      "description": "the url of the endpoint that will send pushes to the device"
+    },
+    "proxyDid": {
+      "type": "string",
+      "description": "did of the organization doing the pushing"
+    }
+  },
+  "required": [
+    "pushToken",
+    "pushUrl"
+  ]
+}

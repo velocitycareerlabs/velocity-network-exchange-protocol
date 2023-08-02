@@ -1,0 +1,71 @@
+{
+  "type": "object",
+  "title": "offer",
+  "version": 1,
+  "description": "An offer is similar to a credential but is never encoded as a JWT as it doesnt carry the digital signature.",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "array",
+      "description": "type is identical to the standard based type found on verifiable credentials but does not accept a string, it only accepts an array to indicate an unordered set of type URIs",
+      "items": {
+        "type": "string"
+      }
+    },
+    "issuer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "the did id for the issuer."
+        }
+      }
+    },
+    "credentialSubject": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Contains all the claims of the credential"
+    },
+    "offerCreationDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "offerExpirationDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "offerId": {
+      "type": "string"
+    },
+    "linkedCredentials": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "linkCode": {
+            "type": "string"
+          },
+          "linkType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "linkCode",
+          "linkType"
+        ]
+      }
+    }
+  },
+  "required": [
+    "type",
+    "issuer",
+    "credentialSubject",
+    "offerCreationDate",
+    "offerExpirationDate",
+    "offerId"
+  ]
+}

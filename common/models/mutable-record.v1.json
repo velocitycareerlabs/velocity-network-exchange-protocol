@@ -1,0 +1,21 @@
+{
+  "title": "mutable-record",
+  "allOf": [
+    {
+      "$ref": "./immutable-record.v1.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "updatedAt"
+      ]
+    }
+  ],
+  "description": "An record that can be modified"
+}

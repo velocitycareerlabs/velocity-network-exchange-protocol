@@ -1,0 +1,46 @@
+{
+  "title": "siop-response",
+  "type": "object",
+  "properties": {
+    "state": {
+      "type": "string",
+      "description": "state value from the siop-request"
+    },
+    "sub": {
+      "type": "string",
+      "description": "either the did of the subject or the sub_jwk jwk thumbprint"
+    },
+    "sub_jwk": {
+      "type": "string",
+      "description": "jwk used for signing the presentation"
+    },
+    "aud": {
+      "type": "string",
+      "description": "audience"
+    },
+    "nonce": {
+      "type": "string"
+    },
+    "presentation_submission": {
+      "$ref": "./presentation_submission.v1.json"
+    },
+    "iss": {
+      "type": "string",
+      "pattern": "^https://self-issued.me$"
+    },
+    "exp": {
+      "type": "integer"
+    },
+    "iat": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "sub",
+    "aud",
+    "presentation_submission",
+    "iss",
+    "exp",
+    "iat"
+  ]
+}

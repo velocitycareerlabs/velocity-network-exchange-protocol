@@ -1,0 +1,51 @@
+{
+  "title": "did-service",
+  "type": "object",
+  "additionalProperties": true,
+  "x-examples": {
+    "Example Velocity Credential Agent Service": {
+      "id": "did:velocity:1234567890abcdefghijklmnop#credentialagent-1",
+      "type": "VelocityCredentialAgent_v1.0",
+      "credentialTypes": [
+        "EducationDegree"
+      ],
+      "serviceEndpoint": "https://agent.samplevendor.com/acme"
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "This is typically of the format `${did}#${title}`"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "VlcCredentialAgentOperator_v1",
+        "VlcCareerIssuer_v1",
+        "VlcIdentityIssuer_v1",
+        "VlcNotaryIssuer_v1",
+        "VlcInspector_v1",
+        "VlcNodeOperator_v1",
+        "VlcHolderAppProvider_v1"
+      ],
+      "description": "the type of service"
+    },
+    "serviceEndpoint": {
+      "type": "string",
+      "format": "uri",
+      "description": "the uri of the service"
+    },
+    "credentialTypes": {
+      "type": "array",
+      "description": "if the type is for issuing, the credentialTypes must be listed",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "serviceEndpoint"
+  ]
+}

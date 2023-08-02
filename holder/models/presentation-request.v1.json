@@ -1,0 +1,55 @@
+{
+  "title": "presentation-request",
+  "type": "object",
+  "properties": {
+    "exchange_id": {
+      "type": "string",
+      "description": "the exchange id"
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "client_name",
+        "logo_uri",
+        "tos_uri",
+        "max_retention_period",
+        "submit_presentation_uri",
+        "progress_uri"
+      ],
+      "properties": {
+        "client_name": {
+          "type": "string",
+          "description": "name of the client"
+        },
+        "logo_uri": {
+          "type": "string",
+          "description": "URI to the logo for the company",
+          "format": "uri"
+        },
+        "tos_uri": {
+          "type": "string",
+          "description": "URL to the terms of disclosure",
+          "format": "uri"
+        },
+        "max_retention_period": {
+          "type": "string",
+          "description": "should be an ISO 8601 encoded duration"
+        },
+        "submit_presentation_uri": {
+          "type": "string"
+        },
+        "progress_uri": {
+          "type": "string"
+        }
+      }
+    },
+    "presentation_definition": {
+      "$ref": "./presentation-definition.v1.json"
+    }
+  },
+  "required": [
+    "exchange_id",
+    "metadata",
+    "presentation_definition"
+  ]
+}

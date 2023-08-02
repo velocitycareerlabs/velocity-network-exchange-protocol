@@ -1,0 +1,82 @@
+{
+  "type": "object",
+  "title": "disclosure",
+  "version": "1.0",
+  "additionalProperties": false,
+  "description": "The disclosure request made by an inspector on the velocity newtwork. It describes credential types wanted and (in the future) predicate information as well as terms and conditions for usage of the data",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Id for this disclosure"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description field for this disclosure"
+    },
+    "types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { 
+            "type": "string", 
+            "description": "The credential type to be disclosed" 
+          }
+        }
+      },
+      "description": "To be expanded. Predicates will be added and associated with each credential type. Enables expression of expressions that limit the kinds of credential requested",
+      "example": "[ { \"type\": \"PastEmploymentPosition\"}, { \"type\":  \"CurrentEmploymentPosition\"}, { \"type\": \"EducationDegree\"} ]",
+      "minItems": 1
+    },
+    "organization": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "DID of the inspecting organization"},
+        "logo": { "type": "string", "format": "uri", "description": "URL to a logo" },
+        "name": { "type": "string", "description": "name of the inspecting organization"},
+        "description": { "type": "string", "description": "description of the inspecting organization"}
+      }     
+    },
+    "purpose": {
+      "type": "string",
+      "description": "purpose is a summary of the description"
+    },
+    "duration": {
+      "type": "string",
+      "description": "duration can be a number of days (5d), weeks (12w), months (6m) or years (7y)"
+    },
+    "termsUrl": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "recommended not to be set. defaults to now UTC time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "recommended not to be set. defaults to now UTC time"
+    },
+    "activationDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "can be configured to delay activation to some later time"
+    },
+    "deactivationDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "can be configured to deactivate at a predetermined time or to be deactivated on demand by setting this to now"
+    }
+  },
+  "required": [
+    "id",
+    "types",
+    "organization",
+    "purpose",
+    "duration",
+    "createdAt",
+    "updatedAt",
+    "activationDate"
+  ]
+}

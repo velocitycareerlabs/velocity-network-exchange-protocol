@@ -1,0 +1,27 @@
+{
+  "title": "exchange-progress",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "ISSUING",
+        "DISCLOSURE"
+      ]
+    },
+    "disclosureComplete": {
+      "type": "boolean"
+    },
+    "exchangeComplete": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "type",
+    "disclosureComplete",
+    "exchangeComplete"
+  ]
+}

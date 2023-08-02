@@ -1,0 +1,82 @@
+{
+  "type": "object",
+  "title": "new-vendor-offer",
+  "version": 1,
+  "description": "An offer is similar to a credential but is never wrapped in a JWT and hence doesnt carry the JWS (digital signature)",
+  "properties": {
+    "type": {
+      "type": "array",
+      "description": "type is identical to the standard based type found on verifiable credentials but does not accept a plane string, it only accepts an array to indicate an unordered set of type URIs",
+      "items": {
+        "type": "string"
+      }
+    },
+    "credentialSubject": {
+      "type": "object",
+      "description": "Contains all the claims of the credential",
+      "additionalProperties": true,
+      "required": [
+        "vendorUserId"
+      ],
+      "properties": {
+        "vendorUserId": {
+          "type": "string",
+          "description": "The vendor's id for the person. This is only used to communicate to the vendor's api and is never shared with external parties or the velocity network."
+        }
+      }
+    },
+    "validFrom": {
+      "type": "string",
+      "format": "date-time",
+      "description": "when the credential will start being valid"
+    },
+    "validUntil": {
+      "type": "string",
+      "format": "date-time",
+      "description": "when the credential will expire"
+    },
+    "offerCreationDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "offerExpirationDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "offerId": {
+      "type": "string"
+    },
+    "linkedCredentials": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "linkedCredentialId": {
+            "type": "string"
+          },
+          "linkType": {
+            "type": "string",
+            "enum": [
+              "REPLACE"
+            ]
+          }
+        },
+        "required": [
+          "linkedCredentialId",
+          "linkType"
+        ]
+      }
+    },
+    "exchangeId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "type",
+    "credentialSubject",
+    "offerCreationDate",
+    "offerExpirationDate",
+    "offerId",
+    "exchangeId"
+  ]
+}

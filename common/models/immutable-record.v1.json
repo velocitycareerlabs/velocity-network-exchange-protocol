@@ -1,0 +1,18 @@
+{
+  "title": "immutable-record",
+  "type": "object",
+  "description": "An record that cannot be modified",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "id",
+    "createdAt"
+  ]
+}
