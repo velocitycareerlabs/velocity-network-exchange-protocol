@@ -1,5 +1,8 @@
 {
   "openapi": "3.0.0",
+  "x-stoplight": {
+    "id": "f0bba51ab2461"
+  },
   "info": {
     "title": "VNF Agent Credential Holder API",
     "version": "2.0",
@@ -11,11 +14,8 @@
   },
   "servers": [
     {
-      "url": "https://velocitycareerlabs.com/api/holder/v1",
+      "url": "https://stagingagent.velocitycareerlabs.io/v0.6/holder-api",
       "description": "Holder Reference API"
-    },
-    {
-      "url": "http://localhost:3000"
     }
   ],
   "paths": {
@@ -67,7 +67,10 @@
             "description": "the presentation request id (also the disclosure id)"
           }
         ],
-        "description": "Gets a JWT encoded presentation definition. See presentation-definition https://identity.foundation/presentation-exchange/#presentation-definition "
+        "description": "Gets a JWT encoded presentation definition. See presentation-definition https://identity.foundation/presentation-exchange/#presentation-definition ",
+        "x-stoplight": {
+          "id": "312tglw0ry5uv"
+        }
       }
     },
     "/org/{organizationDID}/inspect/submit-presentation": {
@@ -207,7 +210,10 @@
         "description": "Submit a presentation using Presenation Exchange",
         "tags": [
           "presentation-exchange"
-        ]
+        ],
+        "x-stoplight": {
+          "id": "y9i6ccwruse79"
+        }
       }
     },
     "/org/{organizationDID}/issue/get-credential-manifest": {
@@ -292,7 +298,10 @@
         ],
         "tags": [
           "issuing"
-        ]
+        ],
+        "x-stoplight": {
+          "id": "6to7u4ebemi45"
+        }
       }
     },
     "/org/{organizationDID}/issue/submit-idenitification": {
@@ -432,7 +441,10 @@
         "description": "Submit a identification using Presenation Exchange.\n\nThe body and response is exactly the same as submit-presentation",
         "tags": [
           "issuing"
-        ]
+        ],
+        "x-stoplight": {
+          "id": "9mwif4h27rckn"
+        }
       }
     },
     "/org/{organizationDID}/issue/credential-offers": {
@@ -558,7 +570,10 @@
         "tags": [
           "issuing"
         ],
-        "description": "Generates the offers of the specified types for this person. If no types are specified then offers of all supported types should be generated"
+        "description": "Generates the offers of the specified types for this person. If no types are specified then offers of all supported types should be generated",
+        "x-stoplight": {
+          "id": "cz1jt67ogtfrz"
+        }
       },
       "parameters": [
         {
@@ -634,7 +649,10 @@
         "description": "Generates verifiable credentials for the approved offers. The credentials are returned as an array of jwts that match the credential schema. Explicitly rejected offers may also be sent. Maybe called multiple times for the same exchange. Any offers not received means that the exchange will stay open.\n\nSpec: https://www.w3.org/TR/vc-data-model/#json-web-token - options of how to encode & decode a verifiable credential as a JWT. \n\nImplementation: https://github.com/decentralized-identity/did-jwt-vc",
         "tags": [
           "issuing"
-        ]
+        ],
+        "x-stoplight": {
+          "id": "i9tgl94xjliwy"
+        }
       },
       "parameters": [
         {
@@ -698,7 +716,10 @@
           {
             "SessionToken": []
           }
-        ]
+        ],
+        "x-stoplight": {
+          "id": "v5nv0pmi8db81"
+        }
       }
     }
   },
