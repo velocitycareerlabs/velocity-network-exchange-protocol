@@ -721,6 +721,70 @@
           "id": "v5nv0pmi8db81"
         }
       }
+    },
+    "/org/{organizationDID}/app-redirect": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "organizationDID",
+          "in": "path",
+          "required": true,
+          "description": "organization's DID"
+        }
+      ],
+      "get": {
+        "summary": "App redirection service",
+        "tags": [
+          "common"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "operationId": "get-org-organizationDID-deep-link",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "inspect",
+                "issue"
+              ]
+            },
+            "in": "query",
+            "name": "exchange_type",
+            "description": "issue or inspect. is the \"host\" seciton of the url",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "request_uri",
+            "description": "url encoded url for the request_uri"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "inspectorDid",
+            "description": "did of the organization doing inspection"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "vendorOriginContext",
+            "description": "vendor's origin context token"
+          }
+        ]
+      }
     }
   },
   "components": {
