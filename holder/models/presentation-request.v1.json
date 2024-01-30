@@ -1,6 +1,11 @@
 {
   "title": "presentation-request",
   "type": "object",
+  "required": [
+    "exchange_id",
+    "metadata",
+    "presentation_definition"
+  ],
   "properties": {
     "exchange_id": {
       "type": "string",
@@ -40,16 +45,18 @@
         },
         "progress_uri": {
           "type": "string"
+        },
+        "min_vnf_protocol_version": {
+          "type": "number",
+          "x-stoplight": {
+            "id": "ne433xmgudibd"
+          },
+          "description": "the minimum version of the protocol that is accepted by this endpoint"
         }
       }
     },
     "presentation_definition": {
       "$ref": "./presentation-definition.v1.json"
     }
-  },
-  "required": [
-    "exchange_id",
-    "metadata",
-    "presentation_definition"
-  ]
+  }
 }
