@@ -444,7 +444,13 @@
         ],
         "x-stoplight": {
           "id": "9mwif4h27rckn"
-        }
+        },
+        "security": [
+          {},
+          {
+            "SessionToken": []
+          }
+        ]
       }
     },
     "/org/{organizationDID}/issue/credential-offers": {
