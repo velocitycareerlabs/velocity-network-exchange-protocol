@@ -213,7 +213,13 @@
         ],
         "x-stoplight": {
           "id": "y9i6ccwruse79"
-        }
+        },
+        "security": [
+          {},
+          {
+            "SessionToken": []
+          }
+        ]
       }
     },
     "/org/{organizationDID}/issue/get-credential-manifest": {
@@ -444,13 +450,7 @@
         ],
         "x-stoplight": {
           "id": "9mwif4h27rckn"
-        },
-        "security": [
-          {},
-          {
-            "SessionToken": []
-          }
-        ]
+        }
       }
     },
     "/org/{organizationDID}/issue/credential-offers": {
