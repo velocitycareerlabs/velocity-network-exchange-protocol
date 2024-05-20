@@ -52,6 +52,13 @@
             "id": "ne433xmgudibd"
           },
           "description": "the minimum version of the protocol that is accepted by this endpoint"
+        },
+        "feed": {
+          "type": "boolean",
+          "x-stoplight": {
+            "id": "17m47hradk9aw"
+          },
+          "description": "whether this disclosure request is a feed"
         }
       }
     },
