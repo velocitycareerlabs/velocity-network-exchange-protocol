@@ -24,26 +24,17 @@
           "description": "the did id for the issuer."
         },
         "name": {
-          "type": "string"      
+          "type": "string"
         },
         "image": {
-          "type": "string",          
+          "type": "string",
           "format": "uri"
         }
       }
     },
     "credentialSubject": {
       "type": "object",
-      "additionalProperties": true,
       "description": "Contains all the claims of the credential"
-    },
-    "offerCreationDate": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "offerExpirationDate": {
-      "type": "string",
-      "format": "date-time"
     },
     "offerId": {
       "type": "string"
@@ -71,8 +62,6 @@
     "type",
     "issuer",
     "credentialSubject",
-    "offerCreationDate",
-    "offerExpirationDate",
     "offerId"
   ]
 }
