@@ -1,7 +1,6 @@
 {
   "type": "object",
   "title": "disclosure",
-  "version": "1.0",
   "additionalProperties": false,
   "description": "The disclosure request made by an inspector on the velocity newtwork. It describes credential types wanted and (in the future) predicate information as well as terms and conditions for usage of the data",
   "properties": {

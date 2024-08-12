@@ -1,7 +1,6 @@
 {
   "type": "object",
   "title": "offer",
-  "version": 1,
   "description": "An offer is similar to a credential but is never encoded as a JWT as it doesnt carry the digital signature.",
   "additionalProperties": false,
   "properties": {

@@ -793,7 +793,18 @@
         "description": "Redirection service for app landing"
       }
     },
-    "/oauth/token": {
+    "/org/{organizationDID}/oauth/token": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "organizationDID",
+          "in": "path",
+          "required": true,
+          "description": "organization's DID"
+        }
+      ],
       "post": {
         "summary": "OAuth Token creation",
         "operationId": "post-oauth-token",
@@ -909,7 +920,10 @@
         "description": "Oauth token creation for access and refresh tokens",
         "tags": [
           "common"
-        ]
+        ],
+        "x-stoplight": {
+          "id": "0m3t6k1ie0h2t"
+        }
       }
     }
   },
@@ -919,12 +933,11 @@
         "type": "http",
         "scheme": "Bearer"
       }
-    },
-    "schemas": {}
+    }
   },
   "tags": [
-    {
-      "name": "channels"
-    }
+    {"name": "presentation-exchange", "description": "Receiving presentation use case"},
+    {"name": "issuing", "description": "The issuing credentials use case"},
+    {"name": "common", "description": "Endpoints used across both use cases"}
   ]
 }
