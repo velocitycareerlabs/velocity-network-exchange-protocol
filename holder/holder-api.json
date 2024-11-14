@@ -213,7 +213,13 @@
         ],
         "x-stoplight": {
           "id": "y9i6ccwruse79"
-        }
+        },
+        "security": [
+          {},
+          {
+            "SessionToken": []
+          }
+        ]
       }
     },
     "/org/{organizationDID}/issue/get-credential-manifest": {
@@ -783,7 +789,141 @@
             "name": "vendorOriginContext",
             "description": "vendor's origin context token"
           }
-        ]
+        ],
+        "description": "Redirection service for app landing"
+      }
+    },
+    "/org/{organizationDID}/oauth/token": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "organizationDID",
+          "in": "path",
+          "required": true,
+          "description": "organization's DID"
+        }
+      ],
+      "post": {
+        "summary": "OAuth Token creation",
+        "operationId": "post-oauth-token",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "description": "jwt of the access_token"
+                    },
+                    "refresh_token": {
+                      "type": "string",
+                      "description": "opaque token"
+                    },
+                    "token_type": {
+                      "type": "string",
+                      "description": "Hardcoded to Bearer",
+                      "enum": [
+                        "Bearer"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "access_token",
+                    "token_type"
+                  ]
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "access_token": "eyJz93a...k4laUWw",
+                      "refresh_token": "DSei18d....rErO21op",
+                      "token_type": "Bearer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "../common/models/error.v1.yaml"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "grant_type": {
+                    "type": "string"
+                  },
+                  "authorization_code": {
+                    "type": "string",
+                    "description": "authoirzation code"
+                  },
+                  "refresh_token": {
+                    "type": "string",
+                    "description": "refresh token"
+                  },
+                  "audience": {
+                    "type": "string",
+                    "description": "audience the `access_token` is for"
+                  },
+                  "client_id": {
+                    "type": "string",
+                    "description": "DID of the holder app"
+                  }
+                },
+                "required": [
+                  "grant_type",
+                  "audience",
+                  "client_id"
+                ]
+              },
+              "examples": {
+                "Presentation Token Example": {
+                  "value": {
+                    "grant_type": "authorization_code",
+                    "authorization_code": "Xxfd6hEP98",
+                    "audience": "https://careerwalletap.velocitycareerlabs.io",
+                    "client_id": "did:web:example.com"
+                  }
+                },
+                "Refresh Token Example": {
+                  "value": {
+                    "grant_type": "refresh_token",
+                    "refresh_token": "DSei18d....rErO21op",
+                    "audience": "https://careerwalletap.velocitycareerlabs.io",
+                    "client_id": "did:web:example.com"
+                  }
+                }
+              }
+            }
+          },
+          "description": ""
+        },
+        "description": "Oauth token creation for access and refresh tokens",
+        "tags": [
+          "common"
+        ],
+        "x-stoplight": {
+          "id": "0m3t6k1ie0h2t"
+        }
       }
     }
   },
@@ -793,12 +933,11 @@
         "type": "http",
         "scheme": "Bearer"
       }
-    },
-    "schemas": {}
+    }
   },
   "tags": [
-    {
-      "name": "channels"
-    }
+    {"name": "presentation-exchange", "description": "Receiving presentation use case"},
+    {"name": "issuing", "description": "The issuing credentials use case"},
+    {"name": "common", "description": "Endpoints used across both use cases"}
   ]
 }

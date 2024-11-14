@@ -1,7 +1,6 @@
 {
   "type": "object",
   "title": "presentation",
-  "version": 1,
   "description": "A presentation conforms to the W3C spec. https://w3c.github.io/vc-data-model/CR/2019-03-26/. Proofs are external, handled by encoding a presentation as a JWT and generating it's JWS (digital signature)",
   "additionalProperties": false,
   "properties": {
