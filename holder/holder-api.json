@@ -19,15 +19,16 @@
     }
   ],
   "paths": {
-    "/org/{organizationDID}/inspect/get-presentation-request": {
+    "/org/{organizationId}/inspect/get-presentation-request": {
       "parameters": [
         {
           "schema": {
             "type": "string"
           },
-          "name": "organizationDID",
+          "name": "organizationId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "An identifier for the organization. Can be the organization's DID or an agent tenant id"
         }
       ],
       "get": {
@@ -56,7 +57,7 @@
             }
           }
         },
-        "operationId": "get-org-organizationDID-inspect-get-presentation-request",
+        "operationId": "get-org-organizationId-inspect-get-presentation-request",
         "parameters": [
           {
             "schema": {
@@ -73,15 +74,16 @@
         }
       }
     },
-    "/org/{organizationDID}/inspect/submit-presentation": {
+    "/org/{organizationId}/inspect/submit-presentation": {
       "parameters": [
         {
           "schema": {
             "type": "string"
           },
-          "name": "organizationDID",
+          "name": "organizationId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "An identifier for the organization. Can be the organization's DID or an agent tenant id"
         }
       ],
       "post": {
@@ -222,15 +224,16 @@
         ]
       }
     },
-    "/org/{organizationDID}/issue/get-credential-manifest": {
+    "/org/{organizationId}/issue/get-credential-manifest": {
       "parameters": [
         {
           "schema": {
             "type": "string"
           },
-          "name": "organizationDID",
+          "name": "organizationId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "An identifier for the organization. Can be the organization's DID or an agent tenant id"
         }
       ],
       "get": {
@@ -256,7 +259,7 @@
             }
           }
         },
-        "operationId": "get-org-organizationDID-issue-get-credential-manifest",
+        "operationId": "get-org-organizationId-issue-get-credential-manifest",
         "description": "Gets a JWT encoded issuing-request. See credential-manifest https://identity.foundation/credential-manifest/#resource-definition & presentation-definition https://identity.foundation/presentation-exchange/#presentation-definition",
         "parameters": [
           {
@@ -310,15 +313,16 @@
         }
       }
     },
-    "/org/{organizationDID}/issue/submit-idenitification": {
+    "/org/{organizationId}/issue/submit-idenitification": {
       "parameters": [
         {
           "schema": {
             "type": "string"
           },
-          "name": "organizationDID",
+          "name": "organizationId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "An identifier for the organization. Can be the organization's DID or an agent tenant id"
         }
       ],
       "post": {
@@ -453,7 +457,7 @@
         }
       }
     },
-    "/org/{organizationDID}/issue/credential-offers": {
+    "/org/{organizationId}/issue/credential-offers": {
       "post": {
         "summary": "Generates the credential offers",
         "operationId": "generate-credential-offers",
@@ -586,14 +590,14 @@
           "schema": {
             "type": "string"
           },
-          "name": "organizationDID",
+          "name": "organizationId",
           "in": "path",
           "required": true,
-          "description": "the did of the organization that has been provisioined on the agent"
+          "description": "An identifier for the organization. Can be the organization's DID or an agent tenant id"
         }
       ]
     },
-    "/org/{organizationDID}/issue/finalize-offers": {
+    "/org/{organizationId}/issue/finalize-offers": {
       "post": {
         "summary": "Finalize offers",
         "operationId": "finalize-offers",
@@ -665,22 +669,23 @@
           "schema": {
             "type": "string"
           },
-          "name": "organizationDID",
+          "name": "organizationId",
           "in": "path",
           "required": true,
-          "description": "the did of the organization that has been provisioined on the agent"
+          "description": "An identifier for the organization. Can be the organization's DID or an agent tenant id"
         }
       ]
     },
-    "/org/{organizationDID}/get-exchange-progress": {
+    "/org/{organizationId}/get-exchange-progress": {
       "parameters": [
         {
           "schema": {
             "type": "string"
           },
-          "name": "organizationDID",
+          "name": "organizationId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "An identifier for the organization. Can be the organization's DID or an agent tenant id"
         }
       ],
       "get": {
@@ -702,7 +707,7 @@
             }
           }
         },
-        "operationId": "get-org-organizationDID-inspect-get-presentation-progress",
+        "operationId": "get-org-organizationId-inspect-get-presentation-progress",
         "description": "Get the progress of the exchange",
         "parameters": [
           {
@@ -728,16 +733,16 @@
         }
       }
     },
-    "/org/{organizationDID}/app-redirect": {
+    "/org/{organizationId}/app-redirect": {
       "parameters": [
         {
           "schema": {
             "type": "string"
           },
-          "name": "organizationDID",
+          "name": "organizationId",
           "in": "path",
           "required": true,
-          "description": "organization's DID"
+          "description": "An identifier for the organization. Can be the organization's DID or an agent tenant id"
         }
       ],
       "get": {
@@ -750,7 +755,7 @@
             "description": "OK"
           }
         },
-        "operationId": "get-org-organizationDID-deep-link",
+        "operationId": "get-org-organizationId-deep-link",
         "parameters": [
           {
             "schema": {
@@ -793,16 +798,16 @@
         "description": "Redirection service for app landing"
       }
     },
-    "/org/{organizationDID}/oauth/token": {
+    "/org/{organizationId}/oauth/token": {
       "parameters": [
         {
           "schema": {
             "type": "string"
           },
-          "name": "organizationDID",
+          "name": "organizationId",
           "in": "path",
           "required": true,
-          "description": "organization's DID"
+          "description": "An identifier for the organization. Can be the organization's DID or an agent tenant id"
         }
       ],
       "post": {
